@@ -136,7 +136,7 @@ public class MenjacnicaGUI extends JFrame {
 	}
 
 	public void dodajCB(JComboBox domacaZ, LinkedList<Country> countries) {
-		for (int i = 0; i < countries.size(); i++)
-			domacaZ.addItem(countries.get(i).getName());
+		for (Country i : countries)
+			domacaZ.addItem(i);
 	}
 }

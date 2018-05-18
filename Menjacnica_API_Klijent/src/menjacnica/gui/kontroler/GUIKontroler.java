@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 
 import menjacnica.Country;
 import menjacnica.Menjacnica;
+import menjacnica.Transakcija;
 import menjacnica.gui.MenjacnicaGUI;
 
 public class GUIKontroler {
@@ -75,7 +76,28 @@ public class GUIKontroler {
 			JsonParser p = new JsonParser();
 			JsonObject obj = p.parse(s).getAsJsonObject();
 			Gson g = new GsonBuilder().setPrettyPrinting().create();
-			
+			int count = g.fromJson(obj.getAsJsonObject("query").getAsJsonPrimitive("count"), int.class);
+			if (count == 0) {
+				JOptionPane.showMessageDialog(null, "Ne postoji transakcija", "Greska", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			Double odnos = g.fromJson(obj.getAsJsonObject("results").getAsJsonObject(exc).getAsJsonPrimitive("val"),
+					double.class);
+			Double d = new Double(odnos * Double.parseDouble(gp.domacaIz.getText()));
+			gp.stranaIz.setText(d.toString());
+			Transakcija t = new Transakcija();
+			t.setDatum(new GregorianCalendar());
+			t.setIzValuta(dom);
+			t.setuValuta(str);
+
+			if (count == 0)
+				t.setKurs(null);
+			else
+				t.setKurs(odnos.toString());
+			String tran = g.toJson(t);
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("data/log.json", true)));
+			writer.println(tran);
+			writer.close();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
