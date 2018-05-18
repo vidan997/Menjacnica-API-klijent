@@ -125,6 +125,11 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton getBtnKonvertuj() {
 		if (btnKonvertuj == null) {
 			btnKonvertuj = new JButton("Konvertuj");
+			btnKonvertuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					GUIKontroler.konvertuj();
+				}
+			});
 			btnKonvertuj.setBounds(192, 292, 97, 25);
 		}
 		return btnKonvertuj;

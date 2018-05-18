@@ -1,9 +1,14 @@
 package menjacnica.gui.kontroler;
 
 import java.awt.EventQueue;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +61,26 @@ public class GUIKontroler {
 		gp.dodajCB(gp.domacaZ,countries);
 		gp.dodajCB(gp.stranaZ,countries);
 
+	}
+	
+	public static void konvertuj() {
+		Country c = (Country) gp.domacaZ.getSelectedItem();
+		String dom = c.getCurrencyId();
+		c = (Country) gp.stranaZ.getSelectedItem();
+		String str = c.getCurrencyId();
+		String exc = dom + "_" + str;
+		String s = "http://free.currencyconverterapi.com/api/v3/convert?q=" + exc;
+		try {
+			s = menjacnica.getContent(s);
+			JsonParser p = new JsonParser();
+			JsonObject obj = p.parse(s).getAsJsonObject();
+			Gson g = new GsonBuilder().setPrettyPrinting().create();
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
