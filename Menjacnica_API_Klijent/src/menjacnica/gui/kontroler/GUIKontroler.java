@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Map;
@@ -83,10 +86,17 @@ public class GUIKontroler {
 			}
 			Double odnos = g.fromJson(obj.getAsJsonObject("results").getAsJsonObject(exc).getAsJsonPrimitive("val"),
 					double.class);
-			Double d = new Double(odnos * Double.parseDouble(gp.domacaIz.getText()));
+			
+			Double d;
+			try {
+				d = new Double(odnos * Double.parseDouble(gp.domacaIz.getText()));
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Unesite iznos!", "Greska", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			gp.stranaIz.setText(d.toString());
 			Transakcija t = new Transakcija();
-			t.setDatum(new GregorianCalendar());
+			GregorianCalendar gc = (new GregorianCalendar());
 			t.setIzValuta(dom);
 			t.setuValuta(str);
 
@@ -94,6 +104,9 @@ public class GUIKontroler {
 				t.setKurs(null);
 			else
 				t.setKurs(odnos.toString());
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String ts = df.format(gc.getTime());
+			t.setDatum(ts);
 			String tran = g.toJson(t);
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("data/log.json", true)));
 			writer.println(tran);

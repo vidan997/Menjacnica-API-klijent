@@ -1,18 +1,17 @@
 package menjacnica;
 
-import java.util.GregorianCalendar;
 
 public class Transakcija {
-	private GregorianCalendar datum;
+	private String datum;
 	private String izValuta;
 	private String uValuta;
 	private String kurs;
 
-	public GregorianCalendar getDatum() {
+	public String getDatum() {
 		return datum;
 	}
 
-	public void setDatum(GregorianCalendar datum) {
+	public void setDatum(String datum) {
 		this.datum = datum;
 	}
 
